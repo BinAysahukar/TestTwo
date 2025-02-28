@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎥 Watch Insidious & Play Pong</title>
+    <title>🎥 Watch Insidious & Play Flappy Bird</title>
     <style>
         /* Google Font */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -38,17 +38,17 @@
 
         iframe {
             width: 100%;
-            height: 50vh; /* Reduced height for better spacing */
+            height: 50vh;
             border-radius: 10px;
             border: none;
         }
 
-        /* Pong Game */
+        /* Flappy Bird Game */
         .game-container {
-            width: 90vw; /* More space for game */
-            max-width: 800px;
-            height: 350px; /* Increased height */
-            background: #000;
+            width: 90vw;
+            max-width: 400px;
+            height: 500px;
+            background: skyblue;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
             position: relative;
@@ -56,34 +56,32 @@
             margin-top: 10px;
         }
 
-        .paddle {
-            width: 120px; /* Wider paddle for better control */
-            height: 15px;
-            background: white;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 5px;
-        }
-
-        .ball {
-            width: 15px;
-            height: 15px;
-            background: red;
+        .bird {
+            width: 30px;
+            height: 30px;
+            background: yellow;
+            border-radius: 50%;
             position: absolute;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
+            left: 50px;
+            transform: translateY(-50%);
+        }
+
+        .pipe {
+            width: 50px;
+            height: 150px;
+            background: green;
+            position: absolute;
+            right: 0;
+            bottom: 0;
         }
 
         @media (max-width: 768px) {
             iframe {
-                height: 40vh; /* Further reduced height for mobile */
+                height: 40vh;
             }
             .game-container {
-                height: 300px; /* More space for game */
+                height: 400px;
             }
         }
     </style>
@@ -100,62 +98,39 @@
         </iframe>
     </div>
 
-    <!-- Pong Game Section -->
-    <h2>🎮 Play Pong!</h2>
+    <!-- Flappy Bird Game Section -->
+    <h2>🎮 Play Flappy Bird!</h2>
     <div class="game-container">
-        <div class="paddle"></div>
-        <div class="ball"></div>
+        <div class="bird"></div>
     </div>
 
     <script>
-        // Get Paddle & Ball
-        const paddle = document.querySelector(".paddle");
-        const ball = document.querySelector(".ball");
+        const bird = document.querySelector(".bird");
         const gameContainer = document.querySelector(".game-container");
 
-        let paddleX = 50;
-        let ballX = 50, ballY = 50;
-        let ballSpeedX = 2, ballSpeedY = 2;
+        let birdY = 50;
+        let gravity = 2;
+        let jump = -15;
+        let velocity = 0;
 
-        // Move Paddle
-        document.addEventListener("keydown", (e) => {
-            if (e.key === "ArrowLeft" && paddleX > 0) {
-                paddleX -= 8;
-            }
-            if (e.key === "ArrowRight" && paddleX < 100) {
-                paddleX += 8;
-            }
-            paddle.style.left = `${paddleX}%`;
-        });
-
-        function moveBall() {
-            ballX += ballSpeedX;
-            ballY += ballSpeedY;
-
-            // Bounce off walls
-            if (ballX <= 0 || ballX >= 98) ballSpeedX *= -1;
-            if (ballY <= 0) ballSpeedY *= -1;
-
-            // Paddle Collision
-            if (ballY >= 85 && ballX > paddleX - 5 && ballX < paddleX + 10) {
-                ballSpeedY *= -1;
-            }
-
-            // Game Over (Reset Ball)
-            if (ballY >= 100) {
-                ballX = 50;
-                ballY = 50;
-                ballSpeedX = 2;
-                ballSpeedY = 2;
-            }
-
-            ball.style.left = `${ballX}%`;
-            ball.style.top = `${ballY}%`;
-
-            requestAnimationFrame(moveBall);
+        // Jump on spacebar or tap
+        function flap() {
+            velocity = jump;
         }
+        document.addEventListener("keydown", (e) => {
+            if (e.code === "Space") flap();
+        });
+        gameContainer.addEventListener("click", flap);
 
-        moveBall();
+        function gameLoop() {
+            velocity += gravity;
+            birdY += velocity;
+            if (birdY > 95) birdY = 95;
+            if (birdY < 0) birdY = 0;
+            bird.style.top = `${birdY}%`;
+            requestAnimationFrame(gameLoop);
+        }
+        gameLoop();
     </script>
 
 </body>
