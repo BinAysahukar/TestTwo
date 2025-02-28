@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎥 Watch Insidious</title>
+    <title>🎥 Watch Insidious & Play Pong</title>
     <style>
         /* Google Font */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
@@ -12,18 +12,19 @@
         body {
             font-family: 'Poppins', sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background: linear-gradient(135deg, #121212, #1e1e1e);
             margin: 0;
-            padding: 0;
+            padding: 20px;
             color: #fff;
+            text-align: center;
         }
 
         /* Video Container */
         .video-container {
-            text-align: center;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 20px;
@@ -31,123 +32,131 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             width: 90vw;
             max-width: 1280px;
-            position: relative;
             transition: transform 0.3s ease-in-out;
+            margin-bottom: 20px;
         }
 
-        /* Hover Effect */
-        .video-container:hover {
-            transform: scale(1.02);
-        }
-
-        /* Heading */
-        h2 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        /* Video */
         iframe {
             width: 100%;
-            height: 70vh;
+            height: 60vh;
             border-radius: 10px;
             border: none;
-            transition: box-shadow 0.3s ease-in-out;
         }
 
-        /* Hover Glow Effect */
-        iframe:hover {
-            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
+        /* Pong Game */
+        .game-container {
+            width: 80vw;
+            max-width: 600px;
+            height: 300px;
+            background: #000;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Play Button */
-        .play-button {
+        .paddle {
+            width: 100px;
+            height: 15px;
+            background: white;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+
+        .ball {
+            width: 15px;
+            height: 15px;
+            background: red;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            animation: pulse 1.5s infinite;
-        }
-
-        .play-button i {
-            font-size: 40px;
-            color: white;
-        }
-
-        /* Play Button Animation */
-        @keyframes pulse {
-            0% {
-                transform: translate(-50%, -50%) scale(1);
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            }
-            50% {
-                transform: translate(-50%, -50%) scale(1.1);
-                box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1);
-                box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .video-container {
-                width: 95vw;
-            }
-            iframe {
-                height: 60vh;
-            }
         }
 
         @media (max-width: 768px) {
-            .video-container {
-                width: 100vw;
-                padding: 10px;
-            }
             iframe {
                 height: 50vh;
             }
-            h2 {
-                font-size: 1.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .video-container {
-                width: 100vw;
-                padding: 5px;
-            }
-            iframe {
-                height: 45vh;
-            }
-            h2 {
-                font-size: 1.2rem;
+            .game-container {
+                width: 90vw;
+                height: 250px;
             }
         }
     </style>
-    <!-- FontAwesome for Play Icon -->
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
+    <!-- Movie Section -->
     <div class="video-container">
-        <h2>🎬 Watch Insidious.</h2>
+        <h2>🎬 Watch Insidious</h2>
         <iframe 
             src="https://drive.google.com/file/d/1P5558DEi8sibQzrUKg5jRLLJ7o8f24hH/preview" 
             allow="autoplay; fullscreen"
             allowfullscreen>
         </iframe>
     </div>
+
+    <!-- Pong Game Section -->
+    <h2>🎮 Play Pong!</h2>
+    <div class="game-container">
+        <div class="paddle"></div>
+        <div class="ball"></div>
+    </div>
+
+    <script>
+        // Get Paddle & Ball
+        const paddle = document.querySelector(".paddle");
+        const ball = document.querySelector(".ball");
+        const gameContainer = document.querySelector(".game-container");
+
+        let paddleX = 50;
+        let ballX = 50, ballY = 50;
+        let ballSpeedX = 2, ballSpeedY = 2;
+
+        // Move Paddle
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowLeft" && paddleX > 0) {
+                paddleX -= 8;
+            }
+            if (e.key === "ArrowRight" && paddleX < 100) {
+                paddleX += 8;
+            }
+            paddle.style.left = `${paddleX}%`;
+        });
+
+        function moveBall() {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            // Bounce off walls
+            if (ballX <= 0 || ballX >= 98) ballSpeedX *= -1;
+            if (ballY <= 0) ballSpeedY *= -1;
+
+            // Paddle Collision
+            if (ballY >= 85 && ballX > paddleX - 5 && ballX < paddleX + 10) {
+                ballSpeedY *= -1;
+            }
+
+            // Game Over (Reset Ball)
+            if (ballY >= 100) {
+                ballX = 50;
+                ballY = 50;
+                ballSpeedX = 2;
+                ballSpeedY = 2;
+            }
+
+            ball.style.left = `${ballX}%`;
+            ball.style.top = `${ballY}%`;
+
+            requestAnimationFrame(moveBall);
+        }
+
+        moveBall();
+    </script>
 
 </body>
 </html>
