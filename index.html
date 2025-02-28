@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Cube & Movie</title>
+    <title>🎥 Watch Insidious</title>
     <style>
+        /* Google Font */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
+        /* Global Styles */
         body {
             font-family: 'Poppins', sans-serif;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             background: linear-gradient(135deg, #121212, #1e1e1e);
             margin: 0;
-            padding: 20px;
+            padding: 0;
             color: #fff;
-            text-align: center;
         }
 
-        /* Video Section */
+        /* Video Container */
         .video-container {
+            text-align: center;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             padding: 20px;
@@ -30,101 +31,159 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             width: 90vw;
             max-width: 1280px;
+            position: relative;
             transition: transform 0.3s ease-in-out;
-            margin-bottom: 20px;
         }
 
-        iframe {
+        /* Hover Effect */
+        .video-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Heading */
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Video */
+        video {
             width: 100%;
-            height: 50vh;
+            height: 70vh;
             border-radius: 10px;
             border: none;
+            transition: box-shadow 0.3s ease-in-out;
         }
 
-        /* 3D Cube */
-        .cube-container {
-            perspective: 1200px;
-            width: 180px;
-            height: 180px;
-            position: relative;
-            margin-top: 20px;
+        /* Hover Glow Effect */
+        video:hover {
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.3);
         }
 
-        .cube {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-            animation: rotate 6s linear infinite;
+        /* Resume Prompt */
+        .resume-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            display: none;
+            text-align: center;
         }
 
-        @keyframes rotate {
-            from { transform: rotateX(0deg) rotateY(0deg); }
-            to { transform: rotateX(360deg) rotateY(360deg); }
+        .resume-popup button {
+            margin: 10px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
-        .cube div {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 22px;
-            font-weight: bold;
+        .resume-popup .resume {
+            background: green;
             color: white;
-            text-shadow: 0px 0px 5px black;
         }
 
-        .front  { transform: translateZ(90px); }
-        .back   { transform: rotateY(180deg) translateZ(90px); }
-        .left   { transform: rotateY(-90deg) translateZ(90px); }
-        .right  { transform: rotateY(90deg) translateZ(90px); }
-        .top    { transform: rotateX(90deg) translateZ(90px); }
-        .bottom { transform: rotateX(-90deg) translateZ(90px); }
+        .resume-popup .restart {
+            background: red;
+            color: white;
+        }
 
-        /* Mobile Optimization */
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .video-container {
+                width: 95vw;
+            }
+            video {
+                height: 60vh;
+            }
+        }
+
         @media (max-width: 768px) {
-            iframe {
-                height: 40vh;
+            .video-container {
+                width: 100vw;
+                padding: 10px;
             }
-            .cube-container {
-                width: 140px;
-                height: 140px;
+            video {
+                height: 50vh;
             }
-            .cube div {
-                font-size: 18px;
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .video-container {
+                width: 100vw;
+                padding: 5px;
+            }
+            video {
+                height: 45vh;
+            }
+            h2 {
+                font-size: 1.2rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Movie Section -->
     <div class="video-container">
         <h2>🎬 Watch Insidious</h2>
-        <iframe 
-            src="https://drive.google.com/file/d/1P5558DEi8sibQzrUKg5jRLLJ7o8f24hH/preview" 
-            allow="autoplay; fullscreen"
-            allowfullscreen>
-        </iframe>
+        <video id="videoPlayer" controls>
+            <source src="your-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
 
-    <!-- 3D Cube Section -->
-    <h2>🎲 Rotate the 3D Cube!</h2>
-    <div class="cube-container">
-        <div class="cube">
-            <div class="front">1</div>
-            <div class="back">2</div>
-            <div class="left">3</div>
-            <div class="right">4</div>
-            <div class="top">5</div>
-            <div class="bottom">6</div>
-        </div>
+    <!-- Resume Prompt -->
+    <div class="resume-popup" id="resumePopup">
+        <p>Would you like to resume from where you left off?</p>
+        <button class="resume" onclick="resumeVideo()">Resume</button>
+        <button class="restart" onclick="restartVideo()">Start Over</button>
     </div>
+
+    <script>
+        const video = document.getElementById("videoPlayer");
+        const resumePopup = document.getElementById("resumePopup");
+        const videoKey = "insidious-video-time";
+
+        // Save the video time when paused or closed
+        video.addEventListener("timeupdate", () => {
+            localStorage.setItem(videoKey, video.currentTime);
+        });
+
+        // Show the popup if the user has watched before
+        window.onload = () => {
+            const lastTime = localStorage.getItem(videoKey);
+            if (lastTime && lastTime > 5) {
+                resumePopup.style.display = "block";
+            }
+        };
+
+        // Resume Video Function
+        function resumeVideo() {
+            const lastTime = localStorage.getItem(videoKey);
+            if (lastTime) {
+                video.currentTime = lastTime;
+            }
+            video.play();
+            resumePopup.style.display = "none";
+        }
+
+        // Restart Video Function
+        function restartVideo() {
+            localStorage.removeItem(videoKey);
+            video.currentTime = 0;
+            video.play();
+            resumePopup.style.display = "none";
+        }
+    </script>
 
 </body>
 </html>
